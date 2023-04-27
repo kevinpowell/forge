@@ -25,6 +25,9 @@ if(${FG_RENDERING_BACKEND} STREQUAL "OpenGL")
     elseif(${FG_USE_WINDOW_TOOLKIT} STREQUAL "sdl2")
         include(opengl/sdl/CMakeLists.txt)
         target_link_libraries(${BkndTargetName} PRIVATE SDL2::SDL2)
+    elseif(${FG_USE_WINDOW_TOOLKIT} STREQUAL "dummy")
+        include(opengl/dummy/CMakeLists.txt)
+        target_link_libraries(${BkndTargetName} PRIVATE glfw)
     endif()
 elseif(${FG_RENDERING_BACKEND} STREQUAL "Vulkan") # vulkan arm is not possible now
     message(FATAL_ERROR "Vulkan rendering support not added yet")
@@ -97,6 +100,9 @@ if(${FG_RENDERING_BACKEND} STREQUAL "OpenGL")
     elseif(${FG_USE_WINDOW_TOOLKIT} STREQUAL "sdl2")
         source_group("backend\\sdl2"
             REGULAR_EXPRESSION ${Forge_SOURCE_DIR}/src/backend/opengl/sdl/*)
+    elseif(${FG_USE_WINDOW_TOOLKIT} STREQUAL "dummy")
+        source_group("backend\\dummy"
+            REGULAR_EXPRESSION ${Forge_SOURCE_DIR}/src/backend/opengl/dummy/*)
     endif()
 elseif(${FG_RENDERING_BACKEND} STREQUAL "Vulkan") # vulkan arm is not possible now
     message(FATAL_ERROR "Vulkan rendering support not added yet")

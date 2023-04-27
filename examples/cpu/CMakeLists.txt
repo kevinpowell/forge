@@ -10,3 +10,5 @@ add_example(plot3 plot3.cpp cpu)
 add_example(plotting plotting.cpp cpu)
 add_example(stream stream.cpp cpu)
 add_example(surface surface.cpp cpu)
+
+add_example_lib(plot3_flutter plot3_flutter.cpp cpu)

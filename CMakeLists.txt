@@ -46,7 +46,7 @@ option(FG_USE_STATIC_CPPFLAGS
     "Use static libstdc++ & libgcc for generating forge library" OFF)
 
 set(FG_USE_WINDOW_TOOLKIT "glfw3" CACHE STRING "Choose Window toolkit")
-set_property(CACHE FG_USE_WINDOW_TOOLKIT PROPERTY STRINGS "glfw3" "sdl2")
+set_property(CACHE FG_USE_WINDOW_TOOLKIT PROPERTY STRINGS "glfw3" "sdl2" "dummy")
 
 set(FG_RENDERING_BACKEND "OpenGL" CACHE STRING "Choose Rendering Backend")
 set_property(CACHE FG_RENDERING_BACKEND PROPERTY STRINGS "OpenGL")

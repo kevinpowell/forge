@@ -91,6 +91,44 @@ function(add_example target_name source backend)
     endif()
 endfunction()
 
+function(add_example_lib target_name source backend)
+    set(options CXX11)
+    set(single_value_args "")
+    set(multiple_value_args INCLUDE_DIRS LIBRARIES)
+    cmake_parse_arguments(arg "${options}" "${single_value_args}" "${multiple_value_args}" ${ARGN})
+
+    set(target "example_${target_name}_${backend}")
+
+    string(TOLOWER ${backend} lowerCaseBackend)
+
+    #No CUDA for example libs right now
+    add_library(${target} ${source})
+
+    set_target_properties(${target} PROPERTIES OUTPUT_NAME "${target_name}")
+    set_target_properties(${target} PROPERTIES FOLDER Examples/${backend})
+
+    if (${arg_CXX11})
+        set_target_properties(${target} PROPERTIES CXX_STANDARD 11)
+    endif (${arg_CXX11})
+
+    if(WIN32)
+        target_compile_definitions(${target} PRIVATE OS_WIN WIN32_MEAN_AND_LEAN)
+    elseif(APPLE)
+        target_compile_definitions(${target} PRIVATE OS_MAC)
+    else(WIN32)
+        target_compile_definitions(${target} PRIVATE OS_LNX)
+    endif(WIN32)
+
+    target_include_directories(${target} PRIVATE ${arg_INCLUDE_DIRS})
+    if(${lowerCaseBackend} STREQUAL "cuda")
+        # CUDA backend examples need same LINK keyword(PRIVATE|PUBLIC) used for
+        # example targets i.e. used by FindCUDA which is empty by default
+        target_link_libraries(${target} Forge::forge ${arg_LIBRARIES})
+    else()
+        target_link_libraries(${target} PRIVATE Forge::forge ${arg_LIBRARIES})
+    endif()
+endfunction()
+
 add_subdirectory(cpu)
 conditional_directory(FG_BUILD_CUDA_EXAMPLES cuda)
 conditional_directory(FG_BUILD_OPENCL_EXAMPLES opencl)
